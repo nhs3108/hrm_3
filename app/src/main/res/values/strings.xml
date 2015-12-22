@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Fhrm</string>
+    <string name="app_name_full">Human Resource Management</string>
+    <string name="msg_sql_exception">Cannot connect to database !</string>
 </resources>
