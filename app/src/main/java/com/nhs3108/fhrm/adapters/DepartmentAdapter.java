@@ -29,7 +29,7 @@ public class DepartmentAdapter extends ArrayAdapter<Department> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = mActivity.getLayoutInflater().inflate(mIdLayout, parent);
+            convertView = mActivity.getLayoutInflater().inflate(mIdLayout, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.departmentName = (TextView) convertView.findViewById(R.id.department_name);
             viewHolder.departmentDescription = (TextView) convertView.findViewById(R.id.department_description);
