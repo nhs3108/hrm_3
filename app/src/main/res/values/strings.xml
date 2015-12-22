@@ -2,4 +2,6 @@
     <string name="app_name">Fhrm</string>
     <string name="app_name_full">Human Resource Management</string>
     <string name="msg_sql_exception">Cannot connect to database !</string>
+    <string name="logo_description">Framgia logo</string>
+    <string name="msg_department_not_found">Department is not found !</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.nhs3108.fhrm.adapters;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,21 +16,24 @@ import java.util.ArrayList;
  * Created by nhs3108 on 18/12/2015.
  */
 public class DepartmentAdapter extends ArrayAdapter<Department> {
-    private Activity mActivity;
+    private Activity activity;
     private int mIdLayout;
     private ArrayList<Department> mList;
+    private LayoutInflater mInflater;
 
     public DepartmentAdapter(Activity activity, int idLayout, ArrayList<Department> list) {
         super(activity, idLayout, list);
-        this.mActivity = activity;
+        this.activity = activity;
         this.mIdLayout = idLayout;
         this.mList = list;
+        this.mInflater = LayoutInflater.from(activity);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
+        Department department = mList.get(position);
         if (convertView == null) {
-            convertView = mActivity.getLayoutInflater().inflate(mIdLayout, parent, false);
+            convertView = mInflater.inflate(mIdLayout, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.departmentName = (TextView) convertView.findViewById(R.id.department_name);
             viewHolder.departmentDescription = (TextView) convertView.findViewById(R.id.department_description);
@@ -38,8 +42,8 @@ public class DepartmentAdapter extends ArrayAdapter<Department> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.departmentName.setText(mList.get(position).getName());
-        viewHolder.departmentDescription.setText(mList.get(position).getDescription());
+        viewHolder.departmentName.setText(department.getName());
+        viewHolder.departmentDescription.setText(department.getDescription());
         viewHolder.departmentStaffQuantity.setText("fake string");
         return convertView;
     }
