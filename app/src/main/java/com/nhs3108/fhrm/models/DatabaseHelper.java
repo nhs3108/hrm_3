@@ -1,15 +1,9 @@
 package com.nhs3108.fhrm.models;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by hongson on 18/12/2015.
@@ -20,12 +14,23 @@ public class DatabaseHelper {
 
     public static final String CREATE_TABLE_DEPARTMENT = "CREATE TABLE IF NOT EXISTS " + Department.DEPARTMENT_TABLE_NAME + "("
             + Department.DEPARTMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + Department.DEPARTMENT_NAME + " VARCHAR(50) NOT NULL,"
-            + Department.DEPARTMENT_DESCRIPTION + " VARCHAR(256) DEFAULT NULL)";
+            + Department.DEPARTMENT_NAME + " TEXT NOT NULL,"
+            + Department.DEPARTMENT_DESCRIPTION + " TEXT DEFAULT '')";
 
-    private static Context sContext;
-    private OpenHelper mOpenHelper;
+    public static final String CREATE_TABLE_STAFF = "CREATE TABLE IF NOT EXISTS " + Staff.STAFF_TABLE_NAME + "("
+            + Staff.STAFF_ID + " INTEGER NOT NULL, "
+            + Staff.STAFF_NAME + " TEXT NOT NULL,"
+            + Staff.STAFF_PLACE_OF_BIRTH + " TEXT DEFAULT '',"
+            + Staff.STAFF_DATE_OF_BIRTH + " TEXT DEFAULT NULL,"
+            + Staff.STAFF_PHONE + " TEXT DEFAULT '',"
+            + Staff.STAFF_POSITION + " TEXT NOT NULL,"
+            + Staff.STAFF_LEFT_JOB + " INTEGER NOT NULL,"
+            + Staff.STAFF_DEPARTMENT_ID + " INTEGET NOT NULL,"
+            + " FOREIGN KEY (" + Staff.STAFF_DEPARTMENT_ID + ") REFERENCES "
+            + Department.DEPARTMENT_TABLE_NAME + "(" + Department.DEPARTMENT_ID + "))";
     public static SQLiteDatabase sDatabase;
+    protected static Context sContext;
+    protected OpenHelper mOpenHelper;
 
     public DatabaseHelper(Context context) {
         DatabaseHelper.sContext = context;
@@ -41,98 +46,6 @@ public class DatabaseHelper {
         mOpenHelper.close();
     }
 
-    public Object getRecord(String tableName, int index) {
-        this.open();
-        Object object = null;
-        Cursor cursor;
-        switch (tableName) {
-            case Department.DEPARTMENT_TABLE_NAME: {
-                Department department = null;
-                String[] columns = {Department.DEPARTMENT_ID, Department.DEPARTMENT_NAME, Department.DEPARTMENT_DESCRIPTION};
-                String selection = Department.DEPARTMENT_ID + " = ?";
-                String[] selectionArgs = {String.valueOf(index)};
-                cursor = sDatabase.query(Department.DEPARTMENT_TABLE_NAME, columns, selection, selectionArgs, null, null, "1");
-                if (cursor != null && cursor.moveToFirst()) {
-                    int id = cursor.getInt(cursor.getColumnIndex(Department.DEPARTMENT_ID));
-                    String name = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_NAME));
-                    String description = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_DESCRIPTION));
-                    department = new Department(name, description);
-                    department.setId(id);
-                }
-                object = department;
-                break;
-            }
-            default:
-                break;
-        }
-        return object;
-    }
-
-    public ArrayList<Department> getAllDepartments() {
-        this.open();
-        ArrayList<Department> list = new ArrayList<Department>();
-        String[] columns = {Department.DEPARTMENT_ID, Department.DEPARTMENT_NAME, Department.DEPARTMENT_DESCRIPTION};
-        Cursor cursor = sDatabase.query(Department.DEPARTMENT_TABLE_NAME, columns, null, null, null, null, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(Department.DEPARTMENT_ID));
-            String name = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_NAME));
-            String description = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_DESCRIPTION));
-            Department department = new Department(name, description);
-            department.setId(id);
-            list.add(department);
-        }
-        this.close();
-        return list;
-    }
-
-    public void insertRecords(ArrayList<Department> departments) throws SQLException {
-        this.open();
-        ContentValues insertValues;
-        sDatabase.beginTransaction();
-        for (Department department : departments) {
-            insertValues = new ContentValues();
-            insertValues.put(Department.DEPARTMENT_NAME, department.getName());
-            insertValues.put(Department.DEPARTMENT_DESCRIPTION, department.getDescription());
-            sDatabase.insert(Department.DEPARTMENT_TABLE_NAME, null, insertValues);
-        }
-        sDatabase.setTransactionSuccessful();
-        sDatabase.endTransaction();
-        this.close();
-    }
-
-    public void updateRecords(ArrayList<Department> departments) throws SQLException {
-        this.open();
-        ContentValues insertValues;
-        sDatabase.beginTransaction();
-        for (Department department : departments) {
-            insertValues = new ContentValues();
-            insertValues.put(Department.DEPARTMENT_NAME, department.getName());
-            insertValues.put(Department.DEPARTMENT_DESCRIPTION, department.getDescription());
-            String whereClause = Department.DEPARTMENT_ID + " = ?";
-            String[] whereArgs = {String.valueOf(department.getId())};
-            sDatabase.update(Department.DEPARTMENT_TABLE_NAME, insertValues, whereClause, whereArgs);
-        }
-        sDatabase.setTransactionSuccessful();
-        sDatabase.endTransaction();
-        this.close();
-    }
-
-    public int deleteRecords(String tableName, int[] ids) throws SQLException {
-        this.open();
-        int result = 0;
-        String selectionArgs = TextUtils.join(", ", Arrays.toString(ids).split("[\\[\\]]")[1].split(", "));
-        switch (tableName) {
-            case Department.DEPARTMENT_TABLE_NAME: {
-                result = sDatabase.delete(Department.DEPARTMENT_TABLE_NAME, Department.DEPARTMENT_ID + " IN ( " + selectionArgs + " )", null);
-                break;
-            }
-            default:
-                break;
-        }
-        this.close();
-        return result;
-    }
-
     private static class OpenHelper extends SQLiteOpenHelper {
         public OpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATA_VERSION);
@@ -140,10 +53,12 @@ public class DatabaseHelper {
 
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_TABLE_DEPARTMENT);
+            db.execSQL(CREATE_TABLE_STAFF);
         }
 
         public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
             db.execSQL("DROP TABLE IF EXISTS " + Department.DEPARTMENT_TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + Staff.STAFF_TABLE_NAME);
             onCreate(db);
         }
     }
