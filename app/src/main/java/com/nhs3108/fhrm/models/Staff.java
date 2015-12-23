@@ -21,14 +21,14 @@ public class Staff {
     public static final String STAFF_DEPARTMENT_ID = "department_id";
     public static final int FLAG_NOT_SAVED = -1;
 
-    public int id = FLAG_NOT_SAVED;
-    public String name = "";
-    public String placeOfBirth = "";
-    public Date dateOfBirth = new Date();
-    public String phone = "";
-    public String position = "";
-    public boolean leftJob = false;
-    public Department department;
+    private int id = FLAG_NOT_SAVED;
+    private String name = "";
+    private String placeOfBirth = "";
+    private Date dateOfBirth = new Date();
+    private String phone = "";
+    private String position = "";
+    private boolean leftJob = false;
+    private Department department;
 
 
     public Staff(String name, Department department) {

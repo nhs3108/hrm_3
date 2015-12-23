@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by hongson on 18/12/2015.
  */
 public class DatabaseHelper {
-    public static final int DATA_VERSION = 1;
+    public static final int DATA_VERSION = 8;
     public static final String DATABASE_NAME = "fhrm.db";
 
     public static final String CREATE_TABLE_DEPARTMENT = "CREATE TABLE IF NOT EXISTS " + Department.DEPARTMENT_TABLE_NAME + "("
@@ -18,14 +18,14 @@ public class DatabaseHelper {
             + Department.DEPARTMENT_DESCRIPTION + " TEXT DEFAULT '')";
 
     public static final String CREATE_TABLE_STAFF = "CREATE TABLE IF NOT EXISTS " + Staff.STAFF_TABLE_NAME + "("
-            + Staff.STAFF_ID + " INTEGER NOT NULL, "
+            + Staff.STAFF_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + Staff.STAFF_NAME + " TEXT NOT NULL,"
             + Staff.STAFF_PLACE_OF_BIRTH + " TEXT DEFAULT '',"
-            + Staff.STAFF_DATE_OF_BIRTH + " TEXT DEFAULT NULL,"
+            + Staff.STAFF_DATE_OF_BIRTH + " TEXT DEFAULT '',"
             + Staff.STAFF_PHONE + " TEXT DEFAULT '',"
-            + Staff.STAFF_POSITION + " TEXT NOT NULL,"
-            + Staff.STAFF_LEFT_JOB + " INTEGER NOT NULL,"
-            + Staff.STAFF_DEPARTMENT_ID + " INTEGET NOT NULL,"
+            + Staff.STAFF_POSITION + " TEXT DEFAULT '',"
+            + Staff.STAFF_LEFT_JOB + " INTEGER DEFAULT 1,"
+            + Staff.STAFF_DEPARTMENT_ID + " INTEGER NOT NULL,"
             + " FOREIGN KEY (" + Staff.STAFF_DEPARTMENT_ID + ") REFERENCES "
             + Department.DEPARTMENT_TABLE_NAME + "(" + Department.DEPARTMENT_ID + "))";
     public static SQLiteDatabase sDatabase;

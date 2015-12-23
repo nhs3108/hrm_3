@@ -6,8 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.text.TextUtils;
 
+import com.nhs3108.fhrm.utils.DateUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created by hongson on 22/12/2015.
@@ -118,5 +121,22 @@ public class DepartmentHelper extends DatabaseHelper implements ModelDao<Departm
         }
         close();
         return list;
+    }
+
+    public Department getDepartmentContainsStaff(Staff staff){
+        open();
+        Department department = null;
+        String selection = Department.DEPARTMENT_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(staff.getDepartment().getId())};
+        Cursor cursor = sDatabase.query(Department.DEPARTMENT_TABLE_NAME, mColumns, selection, selectionArgs, null, null, "1");
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(Department.DEPARTMENT_ID));
+            String name = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_NAME));
+            String description = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_DESCRIPTION));
+            department = new Department(name, description);
+            department.setId(id);
+        }
+        close();
+        return department;
     }
 }

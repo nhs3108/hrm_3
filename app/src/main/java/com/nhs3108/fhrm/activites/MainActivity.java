@@ -1,8 +1,11 @@
 package com.nhs3108.fhrm.activites;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -10,14 +13,16 @@ import com.nhs3108.fhrm.R;
 import com.nhs3108.fhrm.adapters.DepartmentAdapter;
 import com.nhs3108.fhrm.models.Department;
 import com.nhs3108.fhrm.models.DepartmentHelper;
+import com.nhs3108.fhrm.models.Staff;
 import com.nhs3108.fhrm.models.StaffHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by hongson on 20/12/2015.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements AdapterView.OnItemClickListener {
     DepartmentHelper departmentHelper = new DepartmentHelper(this);
     StaffHelper staffHelper = new StaffHelper(this);
 
@@ -28,9 +33,20 @@ public class MainActivity extends Activity {
             ListView listViewDepartments = (ListView) findViewById(R.id.list_departments);
             ArrayList<Department> departments = departmentHelper.getAll();
             DepartmentAdapter adapter = new DepartmentAdapter(this, R.layout.item_department, departments);
+
+            listViewDepartments.setOnItemClickListener(this);
             listViewDepartments.setAdapter(adapter);
         } catch (SQLException e) {
             Toast.makeText(this, getString(R.string.msg_sql_exception), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(this,((Department) parent.getAdapter().getItem(position)).getId() + "" , Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, StaffActivity.class);
+        Department department = (Department) parent.getAdapter().getItem(position);
+        intent.putExtra("department", department);
+        startActivity(intent);
     }
 }

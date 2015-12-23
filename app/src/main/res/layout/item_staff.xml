@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    android:weightSum="100">
+    <TextView
+        android:id="@+id/text_staff_name"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="Nguyen Hong Son"
+        android:layout_weight="30"/>
+    <TextView
+        android:id="@+id/text_place_of_birth"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:textStyle="italic"
+        android:textAlignment="center"
+        android:text="Place of birth: Thon Binh Noi - Xa Tru Huu - Huyen Luc Ngan"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:weightSum="100"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_date_of_birth"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="50"
+            android:text="Date of birth: 31/08/1994"/>
+        <TextView
+            android:id="@+id/text_phone"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="50"
+            android:text="Phone: 01682746446"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:weightSum="100"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_position"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="50"
+            android:text="Position: Developer"/>
+        <TextView
+            android:id="@+id/text_staff_deparment"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="50"
+            android:text="Deparment: Ruby on Rails"/>
+    </LinearLayout>
+</LinearLayout>

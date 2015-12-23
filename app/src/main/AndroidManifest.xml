@@ -13,6 +13,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activites.StaffActivity">
+            <intent-filter>
+                <action android:name="com.nhs3108.fhrm.activities.staff" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
