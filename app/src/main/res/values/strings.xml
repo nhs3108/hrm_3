@@ -4,4 +4,22 @@
     <string name="msg_sql_exception">Cannot connect to database !</string>
     <string name="logo_description">Framgia logo</string>
     <string name="msg_department_not_found">Department is not found !</string>
+    <string name="msg_staff_not_found">Staff is not found !</string>
+    <string name="update_profile_header">Update profile</string>
+    <string name="field_staff_name">Name</string>
+    <string name="field_staff_birthday">Birthday</string>
+    <string name="field_staff_address">Address</string>
+    <string name="field_staff_phone">Phone</string>
+    <string name="field_staff_position">Position</string>
+    <string name="field_staff_deparment">Department</string>
+    <string name="field_staff_left_job">Left-job</string>
+    <string name="label_change">Change</string>
+    <string name="label_save">Save</string>
+    <string name="msg_successfully">Successfully !</string>
+    <string name="error_failed">Failed !</string>
+    <string name="hint_staff_name">Type staff\'s name</string>
+    <string name="hint_staff_birthday">Format 1999-12-31</string>
+    <string name="hint_staff_phone">Staff\'s phone number</string>
+    <string name="hint_staff_address">Type staff\'s address</string>
+    <string name="hint_staff_position">What is staff\'s position</string>
 </resources>

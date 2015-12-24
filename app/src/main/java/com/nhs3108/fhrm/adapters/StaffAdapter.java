@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.nhs3108.fhrm.R;
+import com.nhs3108.fhrm.constants.TypesFormat;
 import com.nhs3108.fhrm.models.Staff;
 import com.nhs3108.fhrm.utils.DateUtils;
 
@@ -45,7 +46,7 @@ public class StaffAdapter extends ArrayAdapter<Staff> {
         }
 
         viewHolder.staffName.setText(staff.getName());
-        viewHolder.staffDateOfBirth.setText(DateUtils.convertToString(staff.getDateOfBirth(), "yyyy-mm-ddd"));
+        viewHolder.staffDateOfBirth.setText(DateUtils.convertToString(staff.getDateOfBirth(), TypesFormat.DATE_FORMAT));
         viewHolder.staffPosition.setText(staff.getPosition());
         if (staff.isLeftJob()) {
             convertView.setBackgroundColor(getContext().getResources().getColor(R.color.colorNegativeBackground));

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.text.TextUtils;
 
+import com.nhs3108.fhrm.constants.TypesFormat;
 import com.nhs3108.fhrm.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
                 insertValues = new ContentValues();
                 insertValues.put(Staff.STAFF_NAME, staff.getName());
                 insertValues.put(Staff.STAFF_PLACE_OF_BIRTH, staff.getPlaceOfBirth());
-                insertValues.put(Staff.STAFF_DATE_OF_BIRTH, DateUtils.convertToString(staff.getDateOfBirth(), "yyyy-mm-dd"));
+                insertValues.put(Staff.STAFF_DATE_OF_BIRTH, DateUtils.convertToString(staff.getDateOfBirth(),
+                        TypesFormat.DATE_FORMAT));
                 insertValues.put(Staff.STAFF_PHONE, staff.getPhone());
                 insertValues.put(Staff.STAFF_POSITION, staff.getPosition());
                 insertValues.put(Staff.STAFF_LEFT_JOB, staff.isLeftJob());
@@ -53,6 +55,25 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
     }
 
     @Override
+    public int update(Staff staff) throws SQLException {
+        open();
+        int numOfRowsUpdated = 0;
+        ContentValues insertValues;
+        insertValues = new ContentValues();
+        insertValues.put(Staff.STAFF_NAME, staff.getName());
+        insertValues.put(Staff.STAFF_PLACE_OF_BIRTH, staff.getPlaceOfBirth());
+        insertValues.put(Staff.STAFF_DATE_OF_BIRTH, DateUtils.convertToString(staff.getDateOfBirth(), TypesFormat.DATE_FORMAT));
+        insertValues.put(Staff.STAFF_POSITION, staff.getPosition());
+        insertValues.put(Staff.STAFF_LEFT_JOB, staff.isLeftJob());
+        insertValues.put(Staff.STAFF_DEPARTMENT_ID, staff.getDepartment().getId());
+        String whereClause = Staff.STAFF_ID + " = ?";
+        String[] whereArgs = {String.valueOf(staff.getId())};
+        numOfRowsUpdated = sDatabase.update(Staff.STAFF_TABLE_NAME, insertValues, whereClause, whereArgs);
+        close();
+        return numOfRowsUpdated;
+    }
+
+    @Override
     public int update(ArrayList<Staff> staffs) throws SQLException {
         open();
         int numOfRowsUpdated = 0;
@@ -61,12 +82,12 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
         try {
             for (Staff staff : staffs) {
                 insertValues = new ContentValues();
-                insertValues.put(Staff.STAFF_TABLE_NAME, staff.getName());
+                insertValues.put(Staff.STAFF_NAME, staff.getName());
                 insertValues.put(Staff.STAFF_PLACE_OF_BIRTH, staff.getPlaceOfBirth());
-                insertValues.put(Staff.STAFF_DATE_OF_BIRTH, DateUtils.convertToString(staff.getDateOfBirth(), "yyyy-mm-dd"));
+                insertValues.put(Staff.STAFF_DATE_OF_BIRTH, DateUtils.convertToString(staff.getDateOfBirth(), TypesFormat.DATE_FORMAT));
                 insertValues.put(Staff.STAFF_POSITION, staff.getPosition());
                 insertValues.put(Staff.STAFF_LEFT_JOB, staff.isLeftJob());
-                insertValues.put(Staff.STAFF_LEFT_JOB, staff.getDepartment().getId());
+                insertValues.put(Staff.STAFF_DEPARTMENT_ID, staff.getDepartment().getId());
                 String whereClause = Staff.STAFF_ID + " = ?";
                 String[] whereArgs = {String.valueOf(staff.getId())};
                 numOfRowsUpdated += sDatabase.update(Staff.STAFF_TABLE_NAME, insertValues, whereClause, whereArgs);
@@ -111,7 +132,7 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
             String name = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME));
             String placeOfBirth = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PLACE_OF_BIRTH));
             String dateOfBirthStr = cursor.getString(cursor.getColumnIndex(Staff.STAFF_DATE_OF_BIRTH));
-            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, "yyyy-mm-dd");
+            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, TypesFormat.DATE_FORMAT);
             String phone = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PHONE));
             String position = cursor.getString(cursor.getColumnIndex(Staff.STAFF_POSITION));
             boolean leftJob = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME)) > 0;
@@ -134,7 +155,7 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
             String name = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME));
             String placeOfBirth = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PLACE_OF_BIRTH));
             String dateOfBirthStr = cursor.getString(cursor.getColumnIndex(Staff.STAFF_DATE_OF_BIRTH));
-            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, "yyyy-mm-dd");
+            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, TypesFormat.DATE_FORMAT);
             String phone = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PHONE));
             String position = cursor.getString(cursor.getColumnIndex(Staff.STAFF_POSITION));
             boolean leftJob = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME)) > 0;
@@ -159,7 +180,7 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
             String name = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME));
             String placeOfBirth = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PLACE_OF_BIRTH));
             String dateOfBirthStr = cursor.getString(cursor.getColumnIndex(Staff.STAFF_DATE_OF_BIRTH));
-            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, "yyyy-mm-dd");
+            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, TypesFormat.DATE_FORMAT);
             String phone = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PHONE));
             String position = cursor.getString(cursor.getColumnIndex(Staff.STAFF_POSITION));
             int a = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME));
