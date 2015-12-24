@@ -5,21 +5,22 @@
     android:orientation="vertical" >
     <ImageView
         android:id="@+id/image_logo"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/framgia" />
+        android:src="@drawable/framgia"
+        android:contentDescription="@string/logo_description"/>
     <TextView
         android:id="@+id/text_appName"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_name_full"
-        android:textSize="23dp"
+        android:textSize="23sp"
         android:gravity="center" />
     <ListView
         android:id="@+id/list_departments"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="40dp" >
     </ListView>

@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
     String[] mColumns = {Staff.STAFF_ID, Staff.STAFF_NAME, Staff.STAFF_PLACE_OF_BIRTH,
-            Staff.STAFF_DATE_OF_BIRTH, Staff.STAFF_PHONE,
+            Staff.STAFF_DATE_OF_BIRTH, Staff.STAFF_PHONE, Staff.STAFF_POSITION,
             Staff.STAFF_PHONE, Staff.STAFF_LEFT_JOB, Staff.STAFF_DEPARTMENT_ID};
 
     public StaffHelper(Context context) {
@@ -33,9 +33,10 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
         try {
             for (Staff staff : staffs) {
                 insertValues = new ContentValues();
-                insertValues.put(Staff.STAFF_TABLE_NAME, staff.getName());
+                insertValues.put(Staff.STAFF_NAME, staff.getName());
                 insertValues.put(Staff.STAFF_PLACE_OF_BIRTH, staff.getPlaceOfBirth());
                 insertValues.put(Staff.STAFF_DATE_OF_BIRTH, DateUtils.convertToString(staff.getDateOfBirth(), "yyyy-mm-dd"));
+                insertValues.put(Staff.STAFF_PHONE, staff.getPhone());
                 insertValues.put(Staff.STAFF_POSITION, staff.getPosition());
                 insertValues.put(Staff.STAFF_LEFT_JOB, staff.isLeftJob());
                 insertValues.put(Staff.STAFF_DEPARTMENT_ID, staff.getDepartment().getId());
@@ -116,7 +117,7 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
             boolean leftJob = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME)) > 0;
             int departmentId = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_DEPARTMENT_ID));
             Department department = new DepartmentHelper(sContext).getById(departmentId);
-            staff = new Staff(name, placeOfBirth, new Date(), phone, position, leftJob, department);
+            staff = new Staff(name, placeOfBirth, dateOfBirth, phone, position, leftJob, department);
             staff.setId(id);
         }
         close();
@@ -139,7 +140,31 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
             boolean leftJob = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME)) > 0;
             int departmentId = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_DEPARTMENT_ID));
             Department department = new DepartmentHelper(sContext).getById(departmentId);
-            Staff staff = new Staff(name, placeOfBirth, new Date(), phone, position, leftJob, department);
+            Staff staff = new Staff(name, placeOfBirth, dateOfBirth, phone, position, leftJob, department);
+            staff.setId(id);
+            list.add(staff);
+        }
+        close();
+        return list;
+    }
+
+    public ArrayList<Staff> getStaffsBelongOfDeparment(Department department) throws SQLException {
+        open();
+        ArrayList<Staff> list = new ArrayList<Staff>();
+        String selection = Staff.STAFF_DEPARTMENT_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(department.getId())};
+        Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, selection, selectionArgs, null, null, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_ID));
+            String name = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME));
+            String placeOfBirth = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PLACE_OF_BIRTH));
+            String dateOfBirthStr = cursor.getString(cursor.getColumnIndex(Staff.STAFF_DATE_OF_BIRTH));
+            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, "yyyy-mm-dd");
+            String phone = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PHONE));
+            String position = cursor.getString(cursor.getColumnIndex(Staff.STAFF_POSITION));
+            int a = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME));
+            boolean leftJob = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME)).equals("true");
+            Staff staff = new Staff(name, placeOfBirth, dateOfBirth, phone, position, leftJob, department);
             staff.setId(id);
             list.add(staff);
         }
