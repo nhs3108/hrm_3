@@ -188,12 +188,14 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
         return list;
     }
 
-    public ArrayList<Staff> getStaffsBelongOfDeparment(Department department) throws SQLException {
+    public ArrayList<Staff> getStaffsBelongOfDeparment(Department department, int offset, int quantity) throws SQLException {
         open();
         ArrayList<Staff> list = new ArrayList<Staff>();
         String selection = Staff.STAFF_DEPARTMENT_ID + " = ?";
         String[] selectionArgs = {String.valueOf(department.getId())};
-        Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, selection, selectionArgs, null, null, null);
+        String orderBy = Staff.STAFF_ID;
+        String limit = offset + ", " + quantity;
+        Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, null, null, null, null, orderBy, limit);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_ID));
             String name = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME));
