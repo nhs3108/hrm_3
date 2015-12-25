@@ -2,26 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
+
     <ImageView
         android:id="@+id/image_logo"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/framgia"
-        android:contentDescription="@string/logo_description"/>
+        android:contentDescription="@string/logo_description"
+        android:src="@drawable/framgia" />
+
     <TextView
         android:id="@+id/text_appName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/app_name_full"
-        android:textSize="23sp"
-        android:gravity="center" />
-    <ListView
-        android:id="@+id/list_departments"
+        android:textSize="23sp" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="40dp" >
-    </ListView>
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/list_departments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="40dp"></ListView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_staff_adding"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="25dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_plus">
+        </android.support.design.widget.FloatingActionButton>
+    </FrameLayout>
 </LinearLayout>

@@ -22,4 +22,5 @@
     <string name="hint_staff_phone">Staff\'s phone number</string>
     <string name="hint_staff_address">Type staff\'s address</string>
     <string name="hint_staff_position">What is staff\'s position</string>
+    <string name="create_new_staff_header">Create new staff</string>
 </resources>

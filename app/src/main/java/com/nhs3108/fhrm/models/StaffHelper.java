@@ -26,6 +26,25 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
     }
 
     @Override
+    public long insert(Staff staff) throws SQLException {
+        open();
+        long rowIdInserted = -1;
+        ContentValues insertValues;
+        insertValues = new ContentValues();
+        insertValues.put(Staff.STAFF_NAME, staff.getName());
+        insertValues.put(Staff.STAFF_PLACE_OF_BIRTH, staff.getPlaceOfBirth());
+        insertValues.put(Staff.STAFF_DATE_OF_BIRTH, DateUtils.convertToString(staff.getDateOfBirth(),
+                TypesFormat.DATE_FORMAT));
+        insertValues.put(Staff.STAFF_PHONE, staff.getPhone());
+        insertValues.put(Staff.STAFF_POSITION, staff.getPosition());
+        insertValues.put(Staff.STAFF_LEFT_JOB, staff.isLeftJob());
+        insertValues.put(Staff.STAFF_DEPARTMENT_ID, staff.getDepartment().getId());
+        rowIdInserted = sDatabase.insert(Staff.STAFF_TABLE_NAME, null, insertValues);
+        close();
+        return rowIdInserted;
+    }
+
+    @Override
     public int insert(ArrayList<Staff> staffs) throws SQLException {
         open();
         int numOfRowsInserted = 0;
