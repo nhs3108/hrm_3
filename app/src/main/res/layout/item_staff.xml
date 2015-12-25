@@ -3,31 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="vertical">
+
     <TextView
         android:id="@+id/text_staff_name"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:weightSum="100"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="100">
+
         <TextView
             android:id="@+id/text_date_of_birth"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50"
             android:gravity="start|top"
-            android:textStyle="italic"/>
+            android:textStyle="italic" />
+
         <TextView
             android:id="@+id/text_position"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50"
-            android:textStyle="italic"
-            android:gravity="center|top"/>
+            android:gravity="center|top"
+            android:textStyle="italic" />
     </LinearLayout>
 </LinearLayout>

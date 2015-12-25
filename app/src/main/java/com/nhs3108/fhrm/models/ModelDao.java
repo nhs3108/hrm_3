@@ -6,6 +6,8 @@ import java.util.ArrayList;
  * Created by hongson on 23/12/2015.
  */
 public interface ModelDao<T> {
+    long insert(T object);
+
     int insert(ArrayList<T> objectList);
 
     int update(T object);

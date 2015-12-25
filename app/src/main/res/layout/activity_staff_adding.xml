@@ -10,7 +10,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="@string/update_profile_header"
+        android:text="@string/create_new_staff_header"
         android:textColor="#278432"
         android:textSize="30sp" />
 
@@ -167,8 +167,8 @@
             android:id="@+id/btn_enable_editing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="enableStaffEditing"
-            android:text="@string/label_change" />
+            android:onClick="saveNewStaff"
+            android:text="@string/label_save" />
     </LinearLayout>
 </LinearLayout>
 

@@ -20,6 +20,19 @@ public class DepartmentHelper extends DatabaseHelper implements ModelDao<Departm
     }
 
     @Override
+    public long insert(Department department) throws SQLException {
+        open();
+        long rowIdInserted = 0;
+        ContentValues insertValues;
+        insertValues = new ContentValues();
+        insertValues.put(Department.DEPARTMENT_NAME, department.getName());
+        insertValues.put(Department.DEPARTMENT_DESCRIPTION, department.getDescription());
+        rowIdInserted = sDatabase.insert(Department.DEPARTMENT_TABLE_NAME, null, insertValues);
+        close();
+        return rowIdInserted;
+    }
+
+    @Override
     public int insert(ArrayList<Department> departments) throws SQLException {
         open();
         int numOfRowsInserted = 0;
