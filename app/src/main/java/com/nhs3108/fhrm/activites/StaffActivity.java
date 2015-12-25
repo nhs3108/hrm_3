@@ -4,12 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nhs3108.fhrm.R;
 import com.nhs3108.fhrm.adapters.StaffAdapter;
+import com.nhs3108.fhrm.constants.MenuConstants;
 import com.nhs3108.fhrm.models.Department;
 import com.nhs3108.fhrm.models.DepartmentHelper;
 import com.nhs3108.fhrm.models.Staff;
@@ -37,10 +43,39 @@ public class StaffActivity extends Activity {
             ListView listStaffs = (ListView) findViewById(R.id.list_staffs);
             StaffAdapter adapter = new StaffAdapter(this, R.layout.item_staff, staffs);
             listStaffs.setAdapter(adapter);
+            registerForContextMenu(listStaffs);
         } catch (NullPointerException e) {
             Toast.makeText(this, getString(R.string.msg_department_not_found), Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             Toast.makeText(this, getString(R.string.msg_sql_exception), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(Menu.NONE, view.getId(), Menu.NONE, MenuConstants.TITLE_SHOW_DETAIL);
+        menu.add(Menu.NONE, view.getId(), Menu.NONE, MenuConstants.TITLE_DELETE);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getTitle().toString()) {
+            case MenuConstants.TITLE_SHOW_DETAIL:
+                Intent intent = new Intent(this, StaffEditingActivity.class);
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                intent.putExtra("staffId", staffs.get(info.position).getId());
+                startActivityForResult(intent, 1);
+                break;
+            case MenuConstants.TITLE_DELETE:
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            this.recreate();
         }
     }
 }

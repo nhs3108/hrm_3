@@ -43,6 +43,21 @@ public class DepartmentHelper extends DatabaseHelper implements ModelDao<Departm
     }
 
     @Override
+    public int update(Department department) throws SQLException {
+        open();
+        int numOfRowsUpdated = 0;
+        ContentValues insertValues;
+        insertValues = new ContentValues();
+        insertValues.put(Department.DEPARTMENT_NAME, department.getName());
+        insertValues.put(Department.DEPARTMENT_DESCRIPTION, department.getDescription());
+        String whereClause = Department.DEPARTMENT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(department.getId())};
+        numOfRowsUpdated = sDatabase.update(Department.DEPARTMENT_TABLE_NAME, insertValues, whereClause, whereArgs);
+        close();
+        return numOfRowsUpdated;
+    }
+
+    @Override
     public int update(ArrayList<Department> departments) throws SQLException {
         open();
         int numOfRowsUpdated = 0;

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public interface ModelDao<T> {
     int insert(ArrayList<T> objectList);
 
+    int update(T object);
+
     int update(ArrayList<T> objectList);
 
     int delete(int[] ids);
