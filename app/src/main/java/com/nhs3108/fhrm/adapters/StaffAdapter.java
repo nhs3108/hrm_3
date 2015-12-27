@@ -38,7 +38,7 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
         Staff staff = mStaffList.get(position);
         viewHolder.staffName.setText(staff.getName());
         viewHolder.staffDateOfBirth.setText(DateUtils.convertToString(staff.getDateOfBirth(), TypesFormat.DATE_FORMAT));
-        viewHolder.staffPosition.setText(staff.getPosition());
+        viewHolder.staffDepartment.setText(staff.getDepartment().getName());
     }
 
     @Override
@@ -49,13 +49,13 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView staffName;
         TextView staffDateOfBirth;
-        TextView staffPosition;
+        TextView staffDepartment;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             staffName = (TextView) itemLayoutView.findViewById(R.id.text_staff_name);
             staffDateOfBirth = (TextView) itemLayoutView.findViewById(R.id.text_date_of_birth);
-            staffPosition = (TextView) itemLayoutView.findViewById(R.id.text_position);
+            staffDepartment = (TextView) itemLayoutView.findViewById(R.id.text_staff_department_name);
         }
 
     }

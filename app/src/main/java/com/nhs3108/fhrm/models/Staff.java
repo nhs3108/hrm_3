@@ -19,6 +19,7 @@ public class Staff {
     public static final String STAFF_POSITION = "position";
     public static final String STAFF_LEFT_JOB = "left_job";
     public static final String STAFF_DEPARTMENT_ID = "department_id";
+    public static final String STAFF_DEPARTMENT_NAME = "department_name";
     public static final int FLAG_NOT_SAVED = -1;
 
     private int id = FLAG_NOT_SAVED;

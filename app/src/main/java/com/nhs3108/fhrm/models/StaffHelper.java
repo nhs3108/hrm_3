@@ -195,7 +195,7 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
         String[] selectionArgs = {String.valueOf(department.getId())};
         String orderBy = Staff.STAFF_ID;
         String limit = offset + ", " + quantity;
-        Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, null, null, null, null, orderBy, limit);
+        Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, selection, selectionArgs, null, null, orderBy, limit);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_ID));
             String name = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME));
@@ -206,6 +206,45 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
             String position = cursor.getString(cursor.getColumnIndex(Staff.STAFF_POSITION));
             int a = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME));
             boolean leftJob = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME)).equals("true");
+            Staff staff = new Staff(name, placeOfBirth, dateOfBirth, phone, position, leftJob, department);
+            staff.setId(id);
+            list.add(staff);
+        }
+        close();
+        return list;
+    }
+
+    public ArrayList<Staff> getByField(String fieldName, String keyword, int offset, int quantity) throws SQLException {
+        open();
+        ArrayList<Staff> list = new ArrayList<Staff>();
+        String selection = fieldName + " LIKE ?";
+        String[] selectionArgs = {"%" + keyword + "%"};
+        String orderBy = Staff.STAFF_ID;
+        String limit = offset + ", " + quantity;
+
+        if (fieldName == Staff.STAFF_DEPARTMENT_NAME) {
+            ArrayList<Department> departments = new DepartmentHelper(sContext).getByField(Department.DEPARTMENT_NAME, keyword);
+            int quantityOfDepartments = departments.size();
+            int[] ids = new int[quantityOfDepartments];
+            for (int i = 0; i < quantityOfDepartments; i++) {
+                ids[i] = departments.get(i).getId();
+            }
+            selection = Staff.STAFF_DEPARTMENT_ID + " IN ( "
+                    + TextUtils.join(", ", Arrays.toString(ids).split("[\\[\\]]")[1].split(", ")) + " )";
+            selectionArgs = null;
+        }
+        Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, selection, selectionArgs, null, null, orderBy, limit);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_ID));
+            String name = cursor.getString(cursor.getColumnIndex(Staff.STAFF_NAME));
+            String placeOfBirth = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PLACE_OF_BIRTH));
+            String dateOfBirthStr = cursor.getString(cursor.getColumnIndex(Staff.STAFF_DATE_OF_BIRTH));
+            Date dateOfBirth = DateUtils.convertFromString(dateOfBirthStr, TypesFormat.DATE_FORMAT);
+            String phone = cursor.getString(cursor.getColumnIndex(Staff.STAFF_PHONE));
+            String position = cursor.getString(cursor.getColumnIndex(Staff.STAFF_POSITION));
+            boolean leftJob = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_NAME)) > 0;
+            int departmentId = cursor.getInt(cursor.getColumnIndex(Staff.STAFF_DEPARTMENT_ID));
+            Department department = new DepartmentHelper(sContext).getById(departmentId);
             Staff staff = new Staff(name, placeOfBirth, dateOfBirth, phone, position, leftJob, department);
             staff.setId(id);
             list.add(staff);
