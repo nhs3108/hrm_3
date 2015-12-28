@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by hongson on 18/12/2015.
  */
 public class DatabaseHelper {
-    public static final int DATA_VERSION = 12;
+    public static final int DATA_VERSION = 13;
     public static final String DATABASE_NAME = "fhrm.db";
 
     public static final String CREATE_TABLE_DEPARTMENT = "CREATE TABLE IF NOT EXISTS " + Department.DEPARTMENT_TABLE_NAME + "("
@@ -28,6 +28,9 @@ public class DatabaseHelper {
             + Staff.STAFF_DEPARTMENT_ID + " INTEGER NOT NULL,"
             + " FOREIGN KEY (" + Staff.STAFF_DEPARTMENT_ID + ") REFERENCES "
             + Department.DEPARTMENT_TABLE_NAME + "(" + Department.DEPARTMENT_ID + "))";
+
+    public static final String INIT_DEPARTMENT_DATA = "INSERT INTO " + Department.DEPARTMENT_TABLE_NAME
+            + "(" + Department.DEPARTMENT_NAME + ")" + " VALUES ('Android'), ('Ruby On Rails'), ('PHP')";
     public static SQLiteDatabase sDatabase;
     protected static Context sContext;
     protected OpenHelper mOpenHelper;
@@ -54,6 +57,7 @@ public class DatabaseHelper {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_TABLE_DEPARTMENT);
             db.execSQL(CREATE_TABLE_STAFF);
+            db.execSQL(INIT_DEPARTMENT_DATA);
         }
 
         public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
