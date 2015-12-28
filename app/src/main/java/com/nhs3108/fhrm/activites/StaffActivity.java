@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import com.nhs3108.fhrm.models.Department;
 import com.nhs3108.fhrm.models.DepartmentHelper;
 import com.nhs3108.fhrm.models.Staff;
 import com.nhs3108.fhrm.models.StaffHelper;
+import com.nhs3108.fhrm.utils.StringWithTag;
 
 import java.util.ArrayList;
 
@@ -31,6 +35,8 @@ import java.util.ArrayList;
  * Created by hongson on 23/12/2015.
  */
 public class StaffActivity extends Activity {
+    private enum TypeOfStaffList {SEARCH_RESULTS, SAME_DEPARTMENT};
+
     private static int sCurrentPage = 1;
     private final int PER_PAGE = 10;
     private DepartmentHelper mDepartmentHelper = new DepartmentHelper(this);
@@ -40,6 +46,10 @@ public class StaffActivity extends Activity {
     private Department mDepartment;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView mRecyclerView;
+    private SearchView mStaffSearchView;
+    private EndlessRecyclerOnScrollListener mOnScrollListener;
+    private Spinner mSpinnerSearchFieldChosing;
+    private TypeOfStaffList mStaffListType = TypeOfStaffList.SAME_DEPARTMENT;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +67,48 @@ public class StaffActivity extends Activity {
             mAdapter = new StaffAdapter(this, mStaffList);
             registerForContextMenu(mRecyclerView);
             mRecyclerView.setAdapter(mAdapter);
-            mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            mOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
                 @Override
                 public void onLoadMore(int currentPage) {
                     loadMoreData();
+                }
+            };
+            mRecyclerView.addOnScrollListener(mOnScrollListener);
+            mStaffSearchView = (SearchView) findViewById(R.id.search_input_query);
+            mStaffSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    reloadData(TypeOfStaffList.SEARCH_RESULTS);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (newText.isEmpty() || newText == null) {
+                        reloadData(TypeOfStaffList.SAME_DEPARTMENT);
+                    }
+                    return false;
+                }
+            });
+            mStaffSearchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<StringWithTag> searchFields = new ArrayList<StringWithTag>();
+                    searchFields.add(new StringWithTag(getString(R.string.field_staff_name), Staff.STAFF_NAME));
+                    searchFields.add(new StringWithTag(getString(R.string.field_staff_address), Staff.STAFF_PLACE_OF_BIRTH));
+                    searchFields.add(new StringWithTag(getString(R.string.field_staff_deparment), Staff.STAFF_DEPARTMENT_NAME));
+                    mSpinnerSearchFieldChosing = (Spinner) findViewById(R.id.search_field_chosing);
+                    ArrayAdapter adapter = new ArrayAdapter<StringWithTag>(StaffActivity.this,
+                            android.R.layout.simple_spinner_dropdown_item, searchFields);
+                    mSpinnerSearchFieldChosing.setAdapter(adapter);
+                    mSpinnerSearchFieldChosing.setVisibility(View.VISIBLE);
+                }
+            });
+            mStaffSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    mSpinnerSearchFieldChosing.setVisibility(View.GONE);
+                    return false;
                 }
             });
         } catch (NullPointerException e) {
@@ -99,7 +147,20 @@ public class StaffActivity extends Activity {
     }
 
     private void loadData() {
-        new StaffLoadingAsyc().execute();
+        if (mStaffListType == TypeOfStaffList.SAME_DEPARTMENT) {
+            new StaffLoadingAsyc().execute();
+        } else {
+            String searchField = ((StringWithTag) mSpinnerSearchFieldChosing.getSelectedItem()).getTag();
+            new StaffLoadingAsyc().execute(searchField, mStaffSearchView.getQuery().toString());
+        }
+    }
+
+    private void reloadData(TypeOfStaffList type) {
+        mStaffListType = type;
+        mStaffList.clear();
+        mOnScrollListener.reset();
+        loadData();
+        mAdapter.notifyDataSetChanged();
     }
 
     private void loadMoreData() {
@@ -107,7 +168,7 @@ public class StaffActivity extends Activity {
         mAdapter.notifyDataSetChanged();
     }
 
-    public class StaffLoadingAsyc extends AsyncTask<Void, Void, Void> {
+    public class StaffLoadingAsyc extends AsyncTask<String, Void, Void> {
         ProgressDialog dialog;
 
         protected void onPreExecute() {
@@ -118,8 +179,13 @@ public class StaffActivity extends Activity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-            ArrayList<Staff> newStaffs = mStaffHelper.getStaffsBelongOfDeparment(mDepartment, mStaffList.size(), PER_PAGE);
+        protected Void doInBackground(String... params) {
+            ArrayList<Staff> newStaffs;
+            if (params.length == 2) {
+                newStaffs = mStaffHelper.getByField(params[0], params[1], mStaffList.size(), PER_PAGE);
+            } else {
+                newStaffs = mStaffHelper.getStaffsBelongOfDeparment(mDepartment, mStaffList.size(), PER_PAGE);
+            }
             mStaffList.addAll(newStaffs);
             return null;
         }

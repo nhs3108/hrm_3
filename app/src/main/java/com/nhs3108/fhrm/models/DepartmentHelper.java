@@ -148,7 +148,7 @@ public class DepartmentHelper extends DatabaseHelper implements ModelDao<Departm
         return list;
     }
 
-    public Department getDepartmentContainsStaff(Staff staff) {
+    public Department getDepartmentContainsStaff(Staff staff) throws SQLException {
         open();
         Department department = null;
         String selection = Department.DEPARTMENT_ID + " = ?";
@@ -163,5 +163,21 @@ public class DepartmentHelper extends DatabaseHelper implements ModelDao<Departm
         }
         close();
         return department;
+    }
+
+    public ArrayList<Department> getByField(String fieldName, String keyword) throws SQLException {
+        ArrayList<Department> list = new ArrayList<Department>();
+        String selection = fieldName + " LIKE ?";
+        String[] selectionArgs = {"%" + keyword + "%"};
+        Cursor cursor = sDatabase.query(Department.DEPARTMENT_TABLE_NAME, mColumns, selection, selectionArgs, null, null, null, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(Department.DEPARTMENT_ID));
+            String name = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_NAME));
+            String description = cursor.getString(cursor.getColumnIndex(Department.DEPARTMENT_DESCRIPTION));
+            Department department = new Department(name, description);
+            department.setId(id);
+            list.add(department);
+        }
+        return list;
     }
 }
