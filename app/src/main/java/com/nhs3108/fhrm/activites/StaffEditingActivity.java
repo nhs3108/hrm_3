@@ -83,6 +83,10 @@ public class StaffEditingActivity extends Activity {
         mSpinnerDepartment.setSelection(spinnerPosition);
     }
 
+    public void onResume () {
+        super.onResume();
+    }
+
     public void enableStaffEditing(View v) {
         mEnableEditingButton.setVisibility(View.GONE);
         setEnableControls(true, mContainerEditing);
