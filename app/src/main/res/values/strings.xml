@@ -25,4 +25,5 @@
     <string name="create_new_staff_header">Create new staff</string>
     <string name="title_loading">Loading</string>
     <string name="msg_please_wait">Please wait ....</string>
+    <string name="msg_has_no_department">No department! Cannot create staff without department!</string>
 </resources>
