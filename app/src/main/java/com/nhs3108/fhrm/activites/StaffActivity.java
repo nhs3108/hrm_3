@@ -65,7 +65,6 @@ public class StaffActivity extends Activity {
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mAdapter = new StaffAdapter(this, mStaffList);
-            registerForContextMenu(mRecyclerView);
             mRecyclerView.setAdapter(mAdapter);
             mOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
                 @Override
@@ -116,27 +115,6 @@ public class StaffActivity extends Activity {
         } catch (SQLException e) {
             Toast.makeText(this, getString(R.string.msg_sql_exception), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(Menu.NONE, view.getId(), Menu.NONE, MenuConstants.TITLE_SHOW_DETAIL);
-        menu.add(Menu.NONE, view.getId(), Menu.NONE, MenuConstants.TITLE_DELETE);
-    }
-
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getTitle().toString()) {
-            case MenuConstants.TITLE_SHOW_DETAIL:
-                Intent intent = new Intent(this, StaffEditingActivity.class);
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                intent.putExtra("staffId", mStaffList.get(info.position).getId());
-                startActivityForResult(intent, 1);
-                break;
-            case MenuConstants.TITLE_DELETE:
-                break;
-            default:
-                break;
-        }
-        return true;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
