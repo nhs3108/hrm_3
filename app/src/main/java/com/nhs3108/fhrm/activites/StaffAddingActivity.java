@@ -47,6 +47,10 @@ public class StaffAddingActivity extends Activity {
         setContentView(R.layout.activity_staff_adding);
         try {
             mDepartments = mDepartmentHelper.getAll();
+            if (mDepartments.size() == 0 ) {
+                Toast.makeText(this, getString(R.string.msg_has_no_department), Toast.LENGTH_SHORT).show();
+                finish();
+            }
         } catch (SQLException e) {
             Toast.makeText(this, getString(R.string.msg_sql_exception), Toast.LENGTH_SHORT).show();
         }

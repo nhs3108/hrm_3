@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by hongson on 18/12/2015.
  */
 public class DatabaseHelper {
-    public static final int DATA_VERSION = 10;
+    public static final int DATA_VERSION = 12;
     public static final String DATABASE_NAME = "fhrm.db";
 
     public static final String CREATE_TABLE_DEPARTMENT = "CREATE TABLE IF NOT EXISTS " + Department.DEPARTMENT_TABLE_NAME + "("
