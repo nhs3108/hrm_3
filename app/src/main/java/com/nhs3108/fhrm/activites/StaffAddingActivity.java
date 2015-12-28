@@ -81,9 +81,17 @@ public class StaffAddingActivity extends Activity {
         Department department = mDepartments.get(mSpinnerDepartment.getSelectedItemPosition());
         mStaff = new Staff(staffName, staffPlaceOfBirth, staffBirthday, staffPhone, staffPosition, staffLeftJob, department);
         try {
-            String insertingStatus = mStaffHelper.insert(mStaff) > -1 ?
-                    getString(R.string.msg_successfully) : getString(R.string.error_failed);
+            String insertingStatus = getString(R.string.error_failed);
+            if (mStaffHelper.insert(mStaff) > -1) {
+                insertingStatus = String.format(getString(R.string.msg_insert_successfully), staffName);
+                mEditStaffName.setText(null);
+                mEditStaffBirthday.setText(null);
+                mEditStaffAddress.setText(null);
+                mEditStaffPositon.setText(null);
+                mEditStaffPhone.setText(null);
+            }
             Toast.makeText(this, insertingStatus, Toast.LENGTH_SHORT).show();
+
         } catch (SQLException e) {
             Toast.makeText(this, getString(R.string.msg_sql_exception), Toast.LENGTH_SHORT).show();
         }
