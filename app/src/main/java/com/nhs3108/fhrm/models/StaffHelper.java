@@ -225,12 +225,16 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
         if (fieldName == Staff.STAFF_DEPARTMENT_NAME) {
             ArrayList<Department> departments = new DepartmentHelper(sContext).getByField(Department.DEPARTMENT_NAME, keyword);
             int quantityOfDepartments = departments.size();
-            int[] ids = new int[quantityOfDepartments];
-            for (int i = 0; i < quantityOfDepartments; i++) {
-                ids[i] = departments.get(i).getId();
+            if(quantityOfDepartments > 0) {
+                int[] ids = new int[quantityOfDepartments];
+                for (int i = 0; i < quantityOfDepartments; i++) {
+                    ids[i] = departments.get(i).getId();
+                }
+                selection = Staff.STAFF_DEPARTMENT_ID + " IN ( "
+                        + TextUtils.join(", ", Arrays.toString(ids).split("[\\[\\]]")[1].split(", ")) + " )";
+            } else {
+                selection = Staff.STAFF_DEPARTMENT_ID + " IN ()";
             }
-            selection = Staff.STAFF_DEPARTMENT_ID + " IN ( "
-                    + TextUtils.join(", ", Arrays.toString(ids).split("[\\[\\]]")[1].split(", ")) + " )";
             selectionArgs = null;
         }
         Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, selection, selectionArgs, null, null, orderBy, limit);
