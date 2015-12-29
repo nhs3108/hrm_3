@@ -1,19 +1,21 @@
 package com.nhs3108.fhrm.activites;
 
-import android.app.Activity;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.nhs3108.fhrm.R;
 import com.nhs3108.fhrm.constants.TypesFormat;
+import com.nhs3108.fhrm.fragments.DatePickerDialogFragment;
 import com.nhs3108.fhrm.models.Department;
 import com.nhs3108.fhrm.models.DepartmentHelper;
 import com.nhs3108.fhrm.models.Staff;
@@ -26,7 +28,7 @@ import java.util.Date;
 /**
  * Created by hongson on 25/12/2015.
  */
-public class StaffAddingActivity extends Activity {
+public class StaffAddingActivity extends FragmentActivity {
     private DepartmentHelper mDepartmentHelper = new DepartmentHelper(this);
     private StaffHelper mStaffHelper = new StaffHelper(this);
     private EditText mEditStaffName;
@@ -47,7 +49,7 @@ public class StaffAddingActivity extends Activity {
         setContentView(R.layout.activity_staff_adding);
         try {
             mDepartments = mDepartmentHelper.getAll();
-            if (mDepartments.size() == 0 ) {
+            if (mDepartments.size() == 0) {
                 Toast.makeText(this, getString(R.string.msg_has_no_department), Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -63,6 +65,19 @@ public class StaffAddingActivity extends Activity {
         mSpinnerDepartment = (Spinner) findViewById(R.id.spinner_staff_department);
         mCheckBoxLeftJob = (CheckBox) findViewById(R.id.checkbox_left_job);
         mEnableEditingButton = (Button) findViewById(R.id.btn_enable_editing);
+
+        mEditStaffBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialogFragment fragment = new DatePickerDialogFragment() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        mEditStaffBirthday.setText(String.format("%s-%s-%s", year, month, day));
+                    }
+                };
+                fragment.show(getSupportFragmentManager(), "");
+            }
+        });
 
         for (Department department : mDepartments) {
             mListOfDeparmentsName.add(department.getName());

@@ -8,11 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -21,7 +17,6 @@ import android.widget.Toast;
 
 import com.nhs3108.fhrm.R;
 import com.nhs3108.fhrm.adapters.StaffAdapter;
-import com.nhs3108.fhrm.constants.MenuConstants;
 import com.nhs3108.fhrm.listeners.EndlessRecyclerOnScrollListener;
 import com.nhs3108.fhrm.models.Department;
 import com.nhs3108.fhrm.models.DepartmentHelper;
@@ -35,9 +30,9 @@ import java.util.ArrayList;
  * Created by hongson on 23/12/2015.
  */
 public class StaffActivity extends Activity {
-    private enum TypeOfStaffList {SEARCH_RESULTS, SAME_DEPARTMENT};
-
     private static int sCurrentPage = 1;
+
+    ;
     private final int PER_PAGE = 10;
     private DepartmentHelper mDepartmentHelper = new DepartmentHelper(this);
     private StaffHelper mStaffHelper = new StaffHelper(this);
@@ -145,6 +140,8 @@ public class StaffActivity extends Activity {
         loadData();
         mAdapter.notifyDataSetChanged();
     }
+
+    private enum TypeOfStaffList {SEARCH_RESULTS, SAME_DEPARTMENT}
 
     public class StaffLoadingAsyc extends AsyncTask<String, Void, Void> {
         ProgressDialog dialog;

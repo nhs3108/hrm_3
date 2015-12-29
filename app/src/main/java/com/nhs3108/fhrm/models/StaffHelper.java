@@ -225,7 +225,7 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
         if (fieldName == Staff.STAFF_DEPARTMENT_NAME) {
             ArrayList<Department> departments = new DepartmentHelper(sContext).getByField(Department.DEPARTMENT_NAME, keyword);
             int quantityOfDepartments = departments.size();
-            if(quantityOfDepartments > 0) {
+            if (quantityOfDepartments > 0) {
                 int[] ids = new int[quantityOfDepartments];
                 for (int i = 0; i < quantityOfDepartments; i++) {
                     ids[i] = departments.get(i).getId();
