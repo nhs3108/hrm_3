@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.nhs3108.fhrm.R;
 import com.nhs3108.fhrm.models.Department;
+import com.nhs3108.fhrm.models.StaffHelper;
 
 import java.util.ArrayList;
 
@@ -20,12 +21,14 @@ public class DepartmentAdapter extends ArrayAdapter<Department> {
     private int mIdLayout;
     private ArrayList<Department> mList;
     private LayoutInflater mInflater;
+    private StaffHelper mStaffHelper;
 
     public DepartmentAdapter(Activity activity, int idLayout, ArrayList<Department> list) {
         super(activity, idLayout, list);
         this.activity = activity;
         this.mIdLayout = idLayout;
         this.mList = list;
+        this.mStaffHelper = new StaffHelper(activity);
         this.mInflater = LayoutInflater.from(activity);
     }
 
@@ -42,9 +45,11 @@ public class DepartmentAdapter extends ArrayAdapter<Department> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         viewHolder.departmentName.setText(department.getName());
         viewHolder.departmentDescription.setText(department.getDescription());
-        viewHolder.departmentStaffQuantity.setText("fake string");
+
+        viewHolder.departmentStaffQuantity.setText(mStaffHelper.sumOfStaffsBelongsTo(department) + "");
         return convertView;
     }
 

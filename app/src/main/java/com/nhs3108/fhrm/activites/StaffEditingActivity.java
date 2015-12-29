@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -111,10 +110,8 @@ public class StaffEditingActivity extends FragmentActivity {
     public void enableStaffEditing(View v) {
         mEnableEditingButton.setVisibility(View.GONE);
         setEnableControls(true, mContainerEditing);
-        final Button saveButton = new Button(this);
-        saveButton.setText(getString(R.string.label_save));
-        LinearLayout layout = (LinearLayout) findViewById(R.id.container_action_buttons);
-        layout.addView(saveButton);
+        final Button saveButton = (Button) findViewById(R.id.btn_save_change);
+        saveButton.setVisibility(View.VISIBLE);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

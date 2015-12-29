@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorNegativeBackground">#9c9c9c</color>
+    <color name="NiceButtonStartColor">#4AA02C</color>
+    <color name="NiceButtonEndColor">#348017</color>
+    <color name="NiceButtonDisabledStartColor">#565051</color>
+    <color name="NiceButtonDisabledEndColor">#736F6E</color>
+    <color name="NiceButtonBorderColor">#254117</color>
 </resources>

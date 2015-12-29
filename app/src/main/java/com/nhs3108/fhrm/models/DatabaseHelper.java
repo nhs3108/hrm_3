@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by hongson on 18/12/2015.
  */
 public class DatabaseHelper {
-    public static final int DATA_VERSION = 13;
+    public static final int DATA_VERSION = 15;
     public static final String DATABASE_NAME = "fhrm.db";
 
     public static final String CREATE_TABLE_DEPARTMENT = "CREATE TABLE IF NOT EXISTS " + Department.DEPARTMENT_TABLE_NAME + "("
@@ -30,7 +30,9 @@ public class DatabaseHelper {
             + Department.DEPARTMENT_TABLE_NAME + "(" + Department.DEPARTMENT_ID + "))";
 
     public static final String INIT_DEPARTMENT_DATA = "INSERT INTO " + Department.DEPARTMENT_TABLE_NAME
-            + "(" + Department.DEPARTMENT_NAME + ")" + " VALUES ('Android'), ('Ruby On Rails'), ('PHP')";
+            + "(" + Department.DEPARTMENT_NAME + ", " + Department.DEPARTMENT_DESCRIPTION + ")"
+            + " VALUES ('Android', 'This is a description !'), ('Ruby On Rails', 'RoR description'), "
+            + "('PHP', 'The smallest group of Framgia')";
     public static SQLiteDatabase sDatabase;
     protected static Context sContext;
     protected OpenHelper mOpenHelper;

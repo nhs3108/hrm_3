@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_cloud"
     android:orientation="vertical">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/create_new_staff_header"
-        android:textColor="#278432"
+        android:textColor="@android:color/background_light"
         android:textSize="30sp" />
 
     <LinearLayout
@@ -20,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -33,7 +35,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="30"
                 android:text="@string/field_staff_name"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/edit_staff_name"
@@ -54,13 +57,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="30"
                 android:text="@string/field_staff_birthday"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/edit_staff_birthday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="70"
+                android:editable="false"
                 android:hint="@string/hint_staff_birthday"
                 android:inputType="none" />
         </LinearLayout>
@@ -76,7 +81,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="30"
                 android:text="@string/field_staff_address"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/edit_staff_address"
@@ -97,7 +103,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="30"
                 android:text="@string/field_staff_phone"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/edit_staff_phone"
@@ -119,7 +126,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="30"
                 android:text="@string/field_staff_position"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/edit_staff_position"
@@ -140,14 +148,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="30"
                 android:text="@string/field_staff_deparment"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <Spinner
                 android:id="@+id/spinner_staff_department"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="70">
-            </Spinner>
+                android:layout_weight="70"></Spinner>
         </LinearLayout>
 
         <CheckBox
@@ -165,11 +173,21 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_enable_editing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/btnStart"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_margin="3dp"
+            android:background="@drawable/nice_button"
             android:onClick="saveNewStaff"
-            android:text="@string/label_save" />
+            android:shadowColor="@android:color/holo_blue_dark"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="@string/label_save"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>
 

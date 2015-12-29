@@ -214,6 +214,22 @@ public class StaffHelper extends DatabaseHelper implements ModelDao<Staff> {
         return list;
     }
 
+    public int sumOfStaffsBelongsTo(Department department) {
+        int sum;
+        try {
+            open();
+            ArrayList<Staff> list = new ArrayList<Staff>();
+            String selection = Staff.STAFF_DEPARTMENT_ID + " = ?";
+            String[] selectionArgs = {String.valueOf(department.getId())};
+            Cursor cursor = sDatabase.query(Staff.STAFF_TABLE_NAME, mColumns, selection, selectionArgs, null, null, null, null);
+            sum = cursor.getCount();
+        } catch (SQLException e) {
+            sum = 0;
+        }
+        close();
+        return sum;
+    }
+
     public ArrayList<Staff> getByField(String fieldName, String keyword, int offset, int quantity) throws SQLException {
         open();
         ArrayList<Staff> list = new ArrayList<Staff>();
