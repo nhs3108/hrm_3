@@ -3,11 +3,9 @@ package com.nhs3108.fhrm.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.nhs3108.fhrm.R;
@@ -15,8 +13,6 @@ import com.nhs3108.fhrm.activites.StaffEditingActivity;
 import com.nhs3108.fhrm.constants.TypesFormat;
 import com.nhs3108.fhrm.models.Staff;
 import com.nhs3108.fhrm.utils.DateUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
