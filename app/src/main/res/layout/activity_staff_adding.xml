@@ -62,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="70"
                 android:hint="@string/hint_staff_birthday"
-                android:inputType="date" />
+                android:inputType="none" />
         </LinearLayout>
 
         <LinearLayout
@@ -146,7 +146,8 @@
                 android:id="@+id/spinner_staff_department"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="70"></Spinner>
+                android:layout_weight="70">
+            </Spinner>
         </LinearLayout>
 
         <CheckBox

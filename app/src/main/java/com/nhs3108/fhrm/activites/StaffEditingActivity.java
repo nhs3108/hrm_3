@@ -1,14 +1,15 @@
 package com.nhs3108.fhrm.activites;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.nhs3108.fhrm.R;
 import com.nhs3108.fhrm.constants.TypesFormat;
+import com.nhs3108.fhrm.fragments.DatePickerDialogFragment;
 import com.nhs3108.fhrm.models.Department;
 import com.nhs3108.fhrm.models.DepartmentHelper;
 import com.nhs3108.fhrm.models.Staff;
@@ -23,11 +25,12 @@ import com.nhs3108.fhrm.models.StaffHelper;
 import com.nhs3108.fhrm.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by hongson on 24/12/2015.
  */
-public class StaffEditingActivity extends Activity {
+public class StaffEditingActivity extends FragmentActivity {
     private DepartmentHelper mDepartmentHelper = new DepartmentHelper(this);
     private StaffHelper mStaffHelper = new StaffHelper(this);
     private EditText mEditStaffName;
@@ -67,6 +70,24 @@ public class StaffEditingActivity extends Activity {
         mSpinnerDepartment = (Spinner) findViewById(R.id.spinner_staff_department);
         mCheckBoxLeftJob = (CheckBox) findViewById(R.id.checkbox_left_job);
         mEnableEditingButton = (Button) findViewById(R.id.btn_enable_editing);
+        mEditStaffBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mStaff.getDateOfBirth());
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialogFragment fragment = new DatePickerDialogFragment(year, month, day) {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        mEditStaffBirthday.setText(String.format("%s-%s-%s", year, month + 1, day));
+                        updateDate(year, month, day);
+                    }
+                };
+                fragment.show(getSupportFragmentManager(), "");
+            }
+        });
 
         mEditStaffName.setText(mStaff.getName());
         mEditStaffBirthday.setText(DateUtils.convertToString(mStaff.getDateOfBirth(), TypesFormat.DATE_FORMAT));
@@ -83,7 +104,7 @@ public class StaffEditingActivity extends Activity {
         mSpinnerDepartment.setSelection(spinnerPosition);
     }
 
-    public void onResume () {
+    public void onResume() {
         super.onResume();
     }
 

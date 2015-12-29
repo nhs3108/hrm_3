@@ -23,7 +23,6 @@
         android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:textSize="30sp" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_staffs"
         android:layout_width="match_parent"
